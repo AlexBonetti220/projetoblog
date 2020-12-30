@@ -10,7 +10,7 @@ export default {
     name:"Home",
     components: {
         Cabecalho
-    }
+    },
 }
 </script>
 
