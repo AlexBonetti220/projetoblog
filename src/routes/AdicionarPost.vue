@@ -51,7 +51,7 @@ export default {
                 titulo:this.post.titulo,
                 descricao:this.post.descricao,
                 autor:this.post.autor,
-                dataPostage:new Date()
+                dataPostagem:new Date()
             })
             .then(() => {
                 alert("Post enviado com sucesso!")

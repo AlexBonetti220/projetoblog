@@ -1,20 +1,64 @@
 <template>
   <div id="meusposts">
-      <h1>Meus posts</h1>
-      <div @click="adicionarPost" id="botaoadicionar">
+      <div id="post" v-if="carregado">
+        <h1>Meus posts</h1>
+        <div id="conteudopost" v-for="post in posts" :key="post.titulo">
+            <h1>{{post.titulo}}</h1>
+            <span>{{post.autor}}</span>
+            <img :src="post.foto" />
+            <p>{{post.descricao}}</p>
+        </div>
+      </div>
+      <div v-else>
+          <img src="../assets/loading.gif">
+      </div>
+      <div v-show="carregado" @click="adicionarPost" id="botaoadicionar">
           <span>+</span>
       </div>
   </div>
 </template>
 
 <script>
+import firebase from "../services/firebaseConnection"
 export default {
     name:"MeusPosts", 
+    data(){
+        return {
+            uidLogado:0,
+            posts:[],
+            carregado:false
+        }
+    },
+    async created() {
+        //Pegando o usuario logado
+        await firebase.database().ref("usuarioLogado").child("uid").on("value", (snapshot) => {
+            this.uidLogado = snapshot.val().uid
+        })
+        this.pegarPosts()
+    },
     methods: {
         adicionarPost () {
             this.$router.push({name:"AdicionarPost"})
-        }
-    }
+        },
+        async pegarPosts(){
+            this.posts = []
+            await firebase.database().ref("posts").child(this.uidLogado).on("value", (snapshot) => {
+                snapshot.forEach((item) => {
+                    let titulo = item.val().titulo
+                    //Pegando a foto
+                   firebase.storage().ref(this.uidLogado).child(titulo).getDownloadURL().then((url) => {
+                        this.posts.push({
+                            titulo,
+                            descricao:item.val().descricao,
+                            autor:item.val().autor,
+                            foto:url
+                        })
+                    })
+                })
+            })
+            this.carregado = true
+        },
+    },
 }
 </script>
 

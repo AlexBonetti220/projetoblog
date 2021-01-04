@@ -20,7 +20,8 @@ export default {
           uid:user.uid
         })
         .then(() => {
-          this.$router.push({name:"Home"})
+          if(this.$router.history.current.name !== "Home")
+            this.$router.push({name:"Home"})
         })        
       }else{
         if(this.$router.history.current.name !== "Login")
