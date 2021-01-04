@@ -62,7 +62,7 @@ export default {
         },
         async enviarFoto() {
             //Salvando a imagem
-            await firebase.storage().ref(this.uidLogado).child(this.post.titulo).put(this.criarBlob())
+            await firebase.storage().ref("images").child(this.post.titulo).put(this.criarBlob())
             .then(() => {
                 //Chamando a função para salvar o realtime database
                 this.salvarDados()

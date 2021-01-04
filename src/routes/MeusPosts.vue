@@ -34,7 +34,9 @@ export default {
         await firebase.database().ref("usuarioLogado").child("uid").on("value", (snapshot) => {
             this.uidLogado = snapshot.val().uid
         })
-        this.pegarPosts()
+    },
+    async mounted() {
+        await this.pegarPosts()
     },
     methods: {
         adicionarPost () {
@@ -46,7 +48,7 @@ export default {
                 snapshot.forEach((item) => {
                     let titulo = item.val().titulo
                     //Pegando a foto
-                   firebase.storage().ref(this.uidLogado).child(titulo).getDownloadURL().then((url) => {
+                   firebase.storage().ref("images").child(titulo).getDownloadURL().then((url) => {
                         this.posts.push({
                             titulo,
                             descricao:item.val().descricao,

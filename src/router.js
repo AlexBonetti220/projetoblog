@@ -15,8 +15,10 @@ const routes = new Router({
         {path:"/cadastro", component:Cadastro, name:"Cadastro"},
         {path:"/login", component:Login, name:"Login"},
         {path:"/", component:Home, name:"Home"},
-        {path:"/meusposts", component:MeusPosts, name:"MeusPosts"},
-        {path:"/meusposts/adicionarpost", component:AdicionarPost, name:"AdicionarPost"}
+        {path:"/meusposts", component:MeusPosts, name:"MeusPosts", children:[
+            {path:"/meusposts/adicionarpost", component:AdicionarPost, name:"AdicionarPost"}
+        ]},
+       
     ]
 })
 
